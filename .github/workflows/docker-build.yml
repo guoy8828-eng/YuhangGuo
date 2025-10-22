@@ -1,0 +1,22 @@
+name: Docker Build
+
+on:
+  push:
+    branches: [main, staging, dev]
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Build Docker image
+      run: |
+        docker build -t multi-branch-app:latest .
+    
+    - name: Test Docker image
+      run: |
+        docker run --rm multi-branch-app:latest python -m pytest tests/ -v
